@@ -26,3 +26,8 @@ df -h /
 echo "================================"
 echo "CI Script Executed Successfully!"
 echo "================================"
+
+echo "================================"
+echo "GitHub Automatic Build Test"
+echo "Jenkins detected a new GitHub commit!"
+echo "================================"
