@@ -99,6 +99,29 @@ stage('Archive Artifacts') {
 }
 
 
+
+stage('Build Docker Image - Rootless BuildKit') {
+    steps {
+        sh '''
+            /opt/buildkit/bin/buildctl \
+              --addr unix:///run/jenkins-buildkit/buildkitd.sock \
+              build \
+              --frontend dockerfile.v0 \
+              --local context=. \
+              --local dockerfile=. \
+              --output type=oci,dest=jenkins-web-app.tar
+        '''
+
+        archiveArtifacts(
+            artifacts: 'jenkins-web-app.tar',
+            fingerprint: true
+        )
+
+        echo 'Docker image built and archived successfully!'
+    }
+}
+
+        
         stage('Deploy') {
             steps {
                 echo "Simulating deployment to ${params.DEPLOY_ENV}"
