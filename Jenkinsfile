@@ -33,6 +33,17 @@ pipeline {
             }
         }
 
+        
+stage('Environment Info') {
+    steps {
+        echo "Application: ${env.APP_NAME}"
+        echo "Job Name: ${env.JOB_NAME}"
+        echo "Build Number: ${env.BUILD_NUMBER}"
+        echo "Workspace: ${env.WORKSPACE}"
+        echo "Selected Environment: ${params.DEPLOY_ENV}"
+    }
+}
+
         stage('Test') {
             when {
                 expression { params.RUN_TESTS }
