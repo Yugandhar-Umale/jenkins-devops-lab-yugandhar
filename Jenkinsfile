@@ -75,6 +75,30 @@ stage('Credentials Verification') {
             }
         }
 
+        
+stage('Archive Artifacts') {
+    steps {
+        sh '''
+            mkdir -p build-reports
+
+            echo "JENKINS BUILD REPORT" > build-reports/build-report.txt
+            echo "====================" >> build-reports/build-report.txt
+            echo "Job Name: $JOB_NAME" >> build-reports/build-report.txt
+            echo "Build Number: $BUILD_NUMBER" >> build-reports/build-report.txt
+            echo "Build URL: $BUILD_URL" >> build-reports/build-report.txt
+            echo "Build Date: $(date)" >> build-reports/build-report.txt
+        '''
+
+        archiveArtifacts(
+            artifacts: 'build-reports/*.txt',
+            fingerprint: true
+        )
+
+        echo 'Build report archived successfully!'
+    }
+}
+
+
         stage('Deploy') {
             steps {
                 echo "Simulating deployment to ${params.DEPLOY_ENV}"
