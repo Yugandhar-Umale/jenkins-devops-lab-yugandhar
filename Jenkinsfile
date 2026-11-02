@@ -121,6 +121,23 @@ stage('Build Docker Image - Rootless BuildKit') {
     }
 }
 
+stage('Validate Docker Image') {
+    steps {
+        sh '''
+            set -eu
+
+            echo "Validating OCI image archive..."
+
+            test -s jenkins-web-app.tar
+
+            tar -tf jenkins-web-app.tar | grep -q '^oci-layout$'
+            tar -tf jenkins-web-app.tar | grep -q '^index.json$'
+
+            echo "OCI image validation passed!"
+        '''
+    }
+}
+
         
         stage('Deploy') {
             steps {
