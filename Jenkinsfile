@@ -44,6 +44,27 @@ stage('Environment Info') {
     }
 }
 
+stage('Credentials Verification') {
+    steps {
+        withCredentials([
+            string(
+                credentialsId: 'lab7-demo-secret',
+                variable: 'LAB_SECRET'
+            )
+        ]) {
+            sh '''
+                if [ -n "$LAB_SECRET" ]; then
+                    echo "Jenkins credential loaded successfully"
+                else
+                    echo "Credential is empty"
+                    exit 1
+                fi
+            '''
+        }
+    }
+}
+
+        
         stage('Test') {
             when {
                 expression { params.RUN_TESTS }
